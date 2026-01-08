@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Flow Navigation Demo</description>
+    <flexiPage>Flow_Navigation_Demo</flexiPage>
+    <label>Flow Navigation Demo</label>
+    <motif>Custom90: Factory</motif>
+</CustomTab>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Dynamic Event Demo - Beat Pad</masterLabel>
+    <description>Demonstrates the lwc:on directive for dynamic event binding with an interactive beat pad machine</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+            <property name="triggerMode" type="String" default="click" label="Default Trigger Mode" 
+                      description="Default event trigger mode (click, hover, touch, all)" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

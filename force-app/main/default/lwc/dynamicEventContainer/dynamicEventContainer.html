@@ -1,0 +1,52 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card title="🔧 Configure Event Behavior via @api" icon-name="utility:settings">
+        <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+            <p class="slds-text-body_regular slds-text-color_weak slds-var-m-bottom_medium slds-text-align_center">
+                Select a preset below to dynamically change which events the Beat Pad responds to.
+                This demonstrates passing event configuration from a parent component via <code class="slds-text-color_success">@api</code> properties.
+            </p>
+            
+            <!-- Preset Cards Grid -->
+            <div class="slds-grid slds-wrap slds-gutters_small slds-var-m-bottom_medium">
+                <template for:each={presetCards} for:item="preset">
+                    <div key={preset.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-5 slds-p-vertical_xx-small">
+                        <button 
+                            type="button"
+                            class={preset.cardClass}
+                            data-preset={preset.id}
+                            onclick={handlePresetChange}
+                            aria-labelledby={preset.ariaLabelId}
+                        >
+                            <span class="slds-assistive-text">{preset.name}</span>
+                            <span class="slds-text-heading_small" id={preset.ariaLabelId}>{preset.name}</span>
+                            <span class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small">{preset.description}</span>
+                            <div class="slds-var-m-top_x-small">
+                                <template for:each={preset.events} for:item="evt">
+                                    <lightning-badge key={evt} label={evt} class="slds-var-m-right_xx-small slds-var-m-top_xx-small"></lightning-badge>
+                                </template>
+                            </div>
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Current Configuration Display -->
+            <div class="slds-box slds-theme_shade slds-var-m-top_medium">
+                <h3 class="slds-text-heading_small slds-var-m-bottom_small">📊 Current Configuration</h3>
+                <div class="slds-grid slds-grid_vertical-align-center slds-var-m-bottom_small">
+                    <span class="slds-text-color_weak slds-var-m-right_small">Trigger Mode:</span>
+                    <lightning-badge label={selectedMode} class="slds-badge_inverse"></lightning-badge>
+                </div>
+                <div class="slds-box slds-theme_default slds-text-font_monospace slds-text-body_small config-code">
+                    <code>&lt;c-dynamic-event-demo trigger-mode="{selectedMode}"&gt;&lt;/c-dynamic-event-demo&gt;</code>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+
+    <!-- The Child Component with Dynamic Events -->
+    <div class="slds-var-m-top_medium">
+        <c-dynamic-event-demo trigger-mode={selectedMode}></c-dynamic-event-demo>
+    </div>
+</template>

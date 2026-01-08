@@ -1,0 +1,127 @@
+<template>
+    <lightning-card title="Empty State Component Demo (Spring '26)" icon-name="standard:empty_state">
+
+        <!-- Toggle buttons to switch between examples -->
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button
+                    label="Empty Cart"
+                    onclick={showEmptyCart}
+                    variant={emptyCartVariant}>
+                </lightning-button>
+                <lightning-button
+                    label="No Tasks"
+                    onclick={showNoTasks}
+                    variant={noTasksVariant}>
+                </lightning-button>
+                <lightning-button
+                    label="No Results"
+                    onclick={showNoResults}
+                    variant={noResultsVariant}>
+                </lightning-button>
+                <lightning-button
+                    label="Illustration Only"
+                    onclick={showIllustrationOnly}
+                    variant={illustrationOnlyVariant}>
+                </lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="slds-var-p-around_medium">
+
+            <!-- Example 1: Empty Cart State -->
+            <template lwc:if={isEmptyCart}>
+                <div class="demo-container">
+                    <lightning-empty-state
+                        illustration-name="cart:noitems"
+                        title="Your cart is empty">
+                        <p slot="description">
+                            Browse our product catalog to find items you love.
+                        </p>
+                        <lightning-button
+                            variant="brand"
+                            label="Browse Products"
+                            slot="cta"
+                            onclick={handleBrowseProducts}>
+                        </lightning-button>
+                    </lightning-empty-state>
+                </div>
+            </template>
+
+            <!-- Example 2: No Tasks State -->
+            <template lwc:if={isNoTasks}>
+                <div class="demo-container">
+                    <lightning-empty-state
+                        illustration-name="noTask"
+                        title="All caught up!">
+                        <p slot="description">
+                            You have no pending tasks. Enjoy your free time or create a new task.
+                        </p>
+                        <lightning-button
+                            variant="brand"
+                            label="Create Task"
+                            slot="cta"
+                            onclick={handleCreateTask}>
+                        </lightning-button>
+                    </lightning-empty-state>
+                </div>
+            </template>
+
+            <!-- Example 3: No Search Results -->
+            <template lwc:if={isNoResults}>
+                <div class="demo-container">
+                    <lightning-empty-state
+                        illustration-name="noResult"
+                        title="No results found">
+                        <p slot="description">
+                            Try adjusting your search criteria or filters to find what you're looking for.
+                        </p>
+                        <div slot="cta">
+                            <lightning-button
+                                variant="neutral"
+                                label="Clear Filters"
+                                onclick={handleClearFilters}
+                                class="slds-m-right_x-small">
+                            </lightning-button>
+                            <lightning-button
+                                variant="brand"
+                                label="New Search"
+                                onclick={handleNewSearch}>
+                            </lightning-button>
+                        </div>
+                    </lightning-empty-state>
+                </div>
+            </template>
+
+            <!-- Example 4: Illustration Only (using lightning-illustration) -->
+            <template lwc:if={isIllustrationOnly}>
+                <div class="demo-container">
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium slds-text-align_center">
+                        Using lightning-illustration (No Text)
+                    </h2>
+                    <lightning-illustration
+                        illustration-name="cart:noitems"
+                        alternative-text="Shopping cart is empty">
+                    </lightning-illustration>
+                    <p class="slds-text-align_center slds-m-top_medium slds-text-color_weak">
+                        The lightning-illustration component displays illustrations without text or buttons.
+                        It automatically adapts to SLDS themes including dark mode.
+                    </p>
+                </div>
+            </template>
+
+        </div>
+
+        <!-- Info section -->
+        <div class="slds-box slds-theme_shade slds-m-around_medium">
+            <h3 class="slds-text-heading_small slds-m-bottom_small">About This Demo</h3>
+            <ul class="slds-list_dotted">
+                <li><strong>lightning-empty-state:</strong> Displays SLDS empty state illustrations with title, description, and CTA buttons</li>
+                <li><strong>lightning-illustration:</strong> Shows illustrations only, without text</li>
+                <li><strong>Theme Adaptive:</strong> Illustrations automatically adjust to SLDS 1/2 themes and dark mode</li>
+                <li><strong>Slots:</strong> Use "description" and "cta" slots for custom content</li>
+            </ul>
+        </div>
+
+    </lightning-card>
+</template>

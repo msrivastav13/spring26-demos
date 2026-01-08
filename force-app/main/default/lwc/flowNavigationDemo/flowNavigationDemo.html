@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title="Flow Navigation Demo" icon-name="standard:flow">
+        <div class="slds-p-around_medium">
+            <p class="slds-text-body_regular slds-m-bottom_medium">
+                This component demonstrates the new <strong>standard__flow</strong> PageReference type 
+                introduced in Spring '26. Click the buttons below to navigate to a screen flow.
+            </p>
+            
+            <div class="slds-grid slds-wrap slds-gutters">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_small">
+                    <lightning-button 
+                        label="Launch Flow" 
+                        variant="brand"
+                        onclick={navigateToFlow}
+                        class="slds-m-right_small">
+                    </lightning-button>
+                </div>
+                
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_small">
+                    <lightning-button 
+                        label="Launch Flow with Input" 
+                        variant="neutral"
+                        onclick={navigateToFlowWithInput}>
+                    </lightning-button>
+                </div>
+                
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_small">
+                    <lightning-button 
+                        label="Generate Flow URL" 
+                        variant="neutral"
+                        onclick={generateFlowUrl}>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+        
+        <div slot="footer">
+            <p class="slds-text-body_small slds-text-color_weak">
+                Target Flow: <code>{flowDevName}</code>
+            </p>
+        </div>
+    </lightning-card>
+</template>
+

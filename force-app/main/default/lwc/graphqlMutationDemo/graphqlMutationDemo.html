@@ -1,0 +1,370 @@
+<template>
+    <lightning-card
+        title="GraphQL executeMutation Demo"
+        icon-name="standard:contact"
+    >
+        <!-- Introduction Section -->
+        <div class="slds-var-p-around_medium">
+            <div class="slds-box slds-theme_shade slds-var-m-bottom_medium">
+                <h2 class="slds-text-heading_small slds-var-m-bottom_x-small">
+                    About executeMutation
+                </h2>
+                <p class="slds-text-body_regular">
+                    The <code>executeMutation</code> method from
+                    <code>lightning/graphql</code>
+                    allows you to create, update, or delete records
+                    imperatively. It takes a single object parameter with:
+                </p>
+                <ul class="slds-list_dotted slds-var-m-top_x-small">
+                    <li>
+                        <strong>query</strong> - A parsed GraphQL mutation using
+                        the <code>gql</code> template literal
+                    </li>
+                    <li>
+                        <strong>variables</strong> - An object containing the
+                        GraphQL variables for the mutation
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Error/Success Messages -->
+            <template if:true={error}>
+                <div
+                    class="slds-notify slds-notify_alert slds-theme_error slds-var-m-bottom_medium"
+                    role="alert"
+                >
+                    <lightning-icon
+                        icon-name="utility:error"
+                        variant="inverse"
+                        size="x-small"
+                        class="slds-var-m-right_x-small"
+                    ></lightning-icon>
+                    <span>{error}</span>
+                </div>
+            </template>
+
+            <template if:true={successMessage}>
+                <div
+                    class="slds-notify slds-notify_alert slds-theme_success slds-var-m-bottom_medium"
+                    role="alert"
+                >
+                    <lightning-icon
+                        icon-name="utility:success"
+                        variant="inverse"
+                        size="x-small"
+                        class="slds-var-m-right_x-small"
+                    ></lightning-icon>
+                    <span>{successMessage}</span>
+                </div>
+            </template>
+
+            <!-- Main Content Grid -->
+            <div class="slds-grid slds-gutters">
+                <!-- Left Column: Contact List -->
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-box">
+                        <h3
+                            class="slds-text-heading_small slds-var-m-bottom_small"
+                        >
+                            Existing Contacts
+                            <span class="slds-badge slds-var-m-left_x-small"
+                                >{totalContactCount}</span
+                            >
+                        </h3>
+
+                        <p
+                            class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small"
+                        >
+                            Click a contact to edit or delete
+                        </p>
+
+                        <template if:true={hasContacts}>
+                            <ul class="slds-has-dividers_bottom-space">
+                                <template
+                                    for:each={contacts}
+                                    for:item="contact"
+                                >
+                                    <li
+                                        key={contact.id}
+                                        class="slds-box_small slds-item contact-item"
+                                        data-id={contact.id}
+                                        onclick={handleContactSelect}
+                                    >
+                                        <div
+                                            class="slds-grid slds-grid_align-spread"
+                                        >
+                                            <div>
+                                                <p
+                                                    class="slds-text-body_regular"
+                                                >
+                                                    <strong
+                                                        >{contact.fullName}</strong
+                                                    >
+                                                </p>
+                                                <p
+                                                    class="slds-text-body_small slds-text-color_weak"
+                                                >
+                                                    {contact.email}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <lightning-icon
+                                                    icon-name="utility:chevronright"
+                                                    size="x-small"
+                                                    alternative-text="Select"
+                                                ></lightning-icon>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <!-- Pagination Controls -->
+                            <div
+                                class="slds-var-m-top_medium slds-grid slds-grid_align-center slds-grid_vertical-align-center"
+                            >
+                                <lightning-button-icon
+                                    icon-name="utility:jump_to_left"
+                                    alternative-text="First Page"
+                                    title="First Page"
+                                    onclick={handleFirstPage}
+                                    disabled={isPreviousDisabled}
+                                    class="slds-m-right_x-small"
+                                ></lightning-button-icon>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronleft"
+                                    alternative-text="Previous Page"
+                                    title="Previous Page"
+                                    onclick={handlePreviousPage}
+                                    disabled={isPreviousDisabled}
+                                    class="slds-m-right_small"
+                                ></lightning-button-icon>
+                                <span
+                                    class="slds-text-body_regular slds-p-horizontal_small"
+                                >
+                                    Page {currentPageNumber}
+                                </span>
+                                <lightning-button-icon
+                                    icon-name="utility:chevronright"
+                                    alternative-text="Next Page"
+                                    title="Next Page"
+                                    onclick={handleNextPage}
+                                    disabled={isNextDisabled}
+                                    class="slds-m-left_small"
+                                ></lightning-button-icon>
+                            </div>
+                        </template>
+
+                        <template if:false={hasContacts}>
+                            <div
+                                class="slds-illustration slds-illustration_small"
+                            >
+                                <p
+                                    class="slds-text-body_regular slds-text-color_weak"
+                                >
+                                    No contacts found. Create one using the
+                                    form!
+                                </p>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Delete Example - Commented out
+                    <div class="slds-box slds-var-m-top_medium">
+                        <h3
+                            class="slds-text-heading_small slds-var-m-bottom_small"
+                        >
+                            Delete Example
+                        </h3>
+                        <pre class="code-block">{deleteExampleCode}</pre>
+                    </div>
+                    -->
+                </div>
+
+                <!-- Right Column: Form -->
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-box">
+                        <h3
+                            class="slds-text-heading_small slds-var-m-bottom_small"
+                        >
+                            {formTitle}
+                        </h3>
+
+                        <!-- Form Fields -->
+                        <div class="slds-form">
+                            <div
+                                class="slds-form-element slds-var-m-bottom_small"
+                            >
+                                <lightning-input
+                                    label="First Name"
+                                    value={firstName}
+                                    onchange={handleFirstNameChange}
+                                    placeholder="Enter first name"
+                                ></lightning-input>
+                            </div>
+
+                            <div
+                                class="slds-form-element slds-var-m-bottom_small"
+                            >
+                                <lightning-input
+                                    label="Last Name"
+                                    value={lastName}
+                                    onchange={handleLastNameChange}
+                                    placeholder="Enter last name"
+                                    required
+                                ></lightning-input>
+                            </div>
+
+                            <div
+                                class="slds-form-element slds-var-m-bottom_medium"
+                            >
+                                <lightning-input
+                                    label="Email"
+                                    type="email"
+                                    value={email}
+                                    onchange={handleEmailChange}
+                                    placeholder="Enter email address"
+                                ></lightning-input>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="slds-button-group">
+                                <template if:true={isCreateMode}>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Create Contact"
+                                        onclick={handleCreate}
+                                        disabled={isLoading}
+                                    ></lightning-button>
+                                </template>
+
+                                <template if:true={isEditMode}>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Update Contact"
+                                        onclick={handleUpdate}
+                                        disabled={isLoading}
+                                    ></lightning-button>
+
+                                    <lightning-button
+                                        variant="destructive"
+                                        label="Delete Contact"
+                                        onclick={handleDelete}
+                                        disabled={isLoading}
+                                        class="slds-var-m-left_x-small"
+                                    ></lightning-button>
+
+                                    <lightning-button
+                                        variant="neutral"
+                                        label="Cancel"
+                                        onclick={handleNewContact}
+                                        disabled={isLoading}
+                                        class="slds-var-m-left_x-small"
+                                    ></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Loading Spinner -->
+                        <template if:true={isLoading}>
+                            <div class="slds-is-relative slds-var-m-top_medium">
+                                <lightning-spinner
+                                    alternative-text="Loading"
+                                    size="small"
+                                ></lightning-spinner>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Create Example Section - Commented out
+                    <div class="slds-box slds-var-m-top_medium">
+                        <h3
+                            class="slds-text-heading_small slds-var-m-bottom_small"
+                        >
+                            Create Example
+                        </h3>
+                        <pre class="code-block">{createExampleCode}</pre>
+                    </div>
+                    -->
+
+                    <!-- Update Example Section - Commented out
+                    <div class="slds-box slds-var-m-top_medium">
+                        <h3
+                            class="slds-text-heading_small slds-var-m-bottom_small"
+                        >
+                            Update Example
+                        </h3>
+                        <pre class="code-block">{updateExampleCode}</pre>
+                    </div>
+                    -->
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="slds-box slds-theme_default slds-var-m-top_medium">
+                <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                    Key Points About executeMutation
+                </h3>
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div
+                        class="slds-col slds-size_1-of-3 slds-var-p-around_small"
+                    >
+                        <div class="key-point">
+                            <lightning-icon
+                                icon-name="utility:edit"
+                                size="small"
+                                class="slds-var-m-right_x-small"
+                            ></lightning-icon>
+                            <strong>Imperative API</strong>
+                            <p
+                                class="slds-text-body_small slds-var-m-top_xx-small"
+                            >
+                                Unlike wire adapters, executeMutation is called
+                                directly from your JavaScript code, giving you
+                                full control over when mutations occur.
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-col slds-size_1-of-3 slds-var-p-around_small"
+                    >
+                        <div class="key-point">
+                            <lightning-icon
+                                icon-name="utility:variable"
+                                size="small"
+                                class="slds-var-m-right_x-small"
+                            ></lightning-icon>
+                            <strong>Variables Object</strong>
+                            <p
+                                class="slds-text-body_small slds-var-m-top_xx-small"
+                            >
+                                Pass dynamic values through the variables
+                                object. Define variable types in your mutation
+                                query using GraphQL syntax ($name: Type!).
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-col slds-size_1-of-3 slds-var-p-around_small"
+                    >
+                        <div class="key-point">
+                            <lightning-icon
+                                icon-name="utility:record"
+                                size="small"
+                                class="slds-var-m-right_x-small"
+                            ></lightning-icon>
+                            <strong>Record Response</strong>
+                            <p
+                                class="slds-text-body_small slds-var-m-top_xx-small"
+                            >
+                                Specify which fields to return in the Record
+                                payload. The response includes exactly the
+                                fields you request.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

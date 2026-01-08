@@ -1,0 +1,219 @@
+/* Minimal custom CSS - only for beat pad specific visuals */
+/* All layout/spacing/typography uses SLDS classes */
+
+/* Visualizer */
+.visualizer-container {
+    background: #f3f3f3;
+}
+
+.visualizer-bars {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 4px;
+    height: 80px;
+    padding: 0.5rem;
+}
+
+.viz-bar {
+    width: 16px;
+    border-radius: 4px 4px 0 0;
+    background: #0176d3;
+    transition: height 0.1s ease;
+}
+
+/* Beat Pad - Core custom styling needed for the interactive pad effect */
+.beat-pad {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    outline: none;
+}
+
+.pad-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.beat-pad[data-active="true"] .pad-inner {
+    transform: scale(0.92);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.beat-pad[data-focused="true"] .pad-inner {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
+}
+
+.pad-emoji {
+    font-size: 1.75rem;
+    transition: transform 0.15s ease;
+}
+
+.beat-pad[data-active="true"] .pad-emoji {
+    transform: scale(1.15);
+}
+
+.pad-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.pad-key {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Pad Colors */
+.beat-pad:nth-child(1) .pad-inner { background: linear-gradient(145deg, #FF6B6B, #e55a5a); }
+.beat-pad:nth-child(2) .pad-inner { background: linear-gradient(145deg, #4ECDC4, #3ebdb5); }
+.beat-pad:nth-child(3) .pad-inner { background: linear-gradient(145deg, #45B7D1, #35a7c1); }
+.beat-pad:nth-child(4) .pad-inner { background: linear-gradient(145deg, #96CEB4, #86bea4); }
+.beat-pad:nth-child(5) .pad-inner { background: linear-gradient(145deg, #FFEAA7, #efda97); }
+.beat-pad:nth-child(6) .pad-inner { background: linear-gradient(145deg, #DDA0DD, #cd90cd); }
+.beat-pad:nth-child(7) .pad-inner { background: linear-gradient(145deg, #98D8C8, #88c8b8); }
+.beat-pad:nth-child(8) .pad-inner { background: linear-gradient(145deg, #F7DC6F, #e7cc5f); }
+.beat-pad:nth-child(9) .pad-inner { background: linear-gradient(145deg, #BB8FCE, #ab7fbe); }
+
+/* Keyboard Keys */
+.key-btn {
+    display: inline-flex;
+    
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.5rem;
+    margin: 0 2px;
+    background: #f3f3f3;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 2px 0 #e5e5e5;
+}
+
+.key-btn_small {
+    min-width: auto;
+    height: auto;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.75rem;
+}
+
+/* Step Indicator */
+.step-indicator {
+    padding-left: 32px;
+    gap: 6px;
+}
+
+.step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0176d3;
+    opacity: 0.3;
+    transition: all 0.15s ease;
+}
+
+.step-dot[data-active="true"] {
+    opacity: 1;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px #0176d3;
+}
+
+/* Sequencer Grid */
+.sequencer-grid {
+    overflow-x: auto;
+}
+
+.row-label {
+    width: 28px;
+    text-align: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.seq-step {
+    width: 28px;
+    height: 28px;
+    margin: 0 3px;
+    border: 2px solid #e5e5e5;
+    border-radius: 0.125rem;
+    background: #f3f3f3;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.seq-step:hover {
+    border-color: #0176d3;
+    background: #f0f8ff;
+}
+
+.seq-step[data-active="true"] {
+    background: #0176d3;
+    border-color: #0176d3;
+}
+
+.seq-step[data-current="true"] {
+    box-shadow: 0 0 8px rgba(1, 118, 211, 0.5);
+}
+
+/* BPM Slider */
+.bpm-slider {
+    width: 80px;
+    accent-color: #0176d3;
+}
+
+/* Code Block */
+.code-block {
+    overflow-x: auto;
+}
+
+.code-block code {
+    color: #181818;
+    white-space: pre;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .beat-pad {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .pad-emoji {
+        font-size: 1.5rem;
+    }
+    
+    .seq-step {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .key-btn {
+        min-width: 32px;
+        height: 32px;
+    }
+}

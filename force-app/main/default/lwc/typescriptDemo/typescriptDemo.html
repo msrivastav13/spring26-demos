@@ -1,0 +1,172 @@
+<template>
+    <lightning-card title="TypeScript Support for Base Components (Spring '26)" icon-name="standard:code_set">
+
+        <div slot="actions">
+            <lightning-badge label="TypeScript"></lightning-badge>
+        </div>
+
+        <div class="slds-var-p-around_medium">
+
+            <!-- Feature Overview -->
+            <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    What's New
+                </h2>
+                <p class="slds-text-body_regular">
+                    Build your apps with confidence! TypeScript rollout is now complete for <strong>all Lightning base components</strong>.
+                    Import type definitions from the <code>@salesforce/lightning-types</code> npm package.
+                </p>
+            </div>
+
+            <!-- Interactive Demo Section -->
+            <div class="slds-grid slds-gutters slds-wrap">
+
+                <!-- Input Demo -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+                    <div class="demo-card slds-box slds-theme_shade">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">
+                            <lightning-icon icon-name="utility:text_template" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            Typed Input Component
+                        </h3>
+                        <lightning-input
+                            type="text"
+                            label="Enter your name"
+                            value={inputValue}
+                            onchange={handleInputChange}
+                            placeholder="Type something...">
+                        </lightning-input>
+                        <p class="slds-m-top_small slds-text-color_weak">
+                            Value: <strong>{inputValue}</strong>
+                        </p>
+                        <p class="slds-text-body_small slds-m-top_x-small type-info">
+                            Type: <code>LightningInput</code>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Combobox Demo -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+                    <div class="demo-card slds-box slds-theme_shade">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">
+                            <lightning-icon icon-name="utility:picklist_type" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            Typed Combobox Component
+                        </h3>
+                        <lightning-combobox
+                            label="Select a language"
+                            value={selectedLanguage}
+                            options={languageOptions}
+                            onchange={handleLanguageChange}
+                            placeholder="Choose a language">
+                        </lightning-combobox>
+                        <p class="slds-m-top_small slds-text-color_weak">
+                            Selected: <strong>{selectedLanguage}</strong>
+                        </p>
+                        <p class="slds-text-body_small slds-m-top_x-small type-info">
+                            Type: <code>LightningCombobox</code>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Button Demo -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+                    <div class="demo-card slds-box slds-theme_shade">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">
+                            <lightning-icon icon-name="utility:touch_action" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            Typed Button Component
+                        </h3>
+                        <div class="slds-m-bottom_small">
+                            <lightning-button
+                                label="Click Me"
+                                variant={buttonVariant}
+                                onclick={handleButtonClick}>
+                            </lightning-button>
+                        </div>
+                        <p class="slds-text-color_weak">
+                            Click count: <strong>{clickCount}</strong>
+                        </p>
+                        <p class="slds-text-body_small slds-m-top_x-small type-info">
+                            Type: <code>LightningButton</code>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Datatable Demo -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-m-bottom_medium">
+                    <div class="demo-card slds-box slds-theme_shade">
+                        <h3 class="slds-text-heading_small slds-m-bottom_small">
+                            <lightning-icon icon-name="utility:table" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            Typed Datatable Component
+                        </h3>
+                        <lightning-datatable
+                            key-field="id"
+                            data={tableData}
+                            columns={tableColumns}
+                            onrowaction={handleRowAction}>
+                        </lightning-datatable>
+                        <p class="slds-text-body_small slds-m-top_small type-info">
+                            Type: <code>LightningDatatable</code>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Code Example Section -->
+            <div class="slds-box slds-theme_default slds-m-top_medium">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:snippet" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    How to Use TypeScript Types
+                </h2>
+                <div class="code-block slds-box slds-theme_shade">
+                    <pre><code>// Step 1: Install the npm package
+// npm install @salesforce/lightning-types --save-dev
+
+// Step 2: Import type definitions (types are ambient)
+import type LightningInput from 'lightning/input';
+import type LightningButton from 'lightning/button';
+import type LightningCombobox from 'lightning/combobox';
+
+// Step 3: Use typed references in your component
+handleInputChange(event: Event): void {'{'}
+    const input = event.target as LightningInput;
+    // Full IntelliSense support for input properties!
+    this.inputValue = input.value ?? '';
+    console.log('Valid:', input.validity?.valid);
+{'}'}
+
+// Type-safe component queries
+const button = this.template.querySelector('lightning-button') as LightningButton;
+button.disabled = true;  // TypeScript knows this property exists!</code></pre>
+                </div>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="slds-box slds-theme_info slds-m-top_medium benefits-box">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:like" size="x-small" class="slds-m-right_x-small" variant="inverse"></lightning-icon>
+                    Benefits of TypeScript Support
+                </h2>
+                <ul class="slds-list_dotted">
+                    <li><strong>IntelliSense:</strong> Get autocomplete suggestions for component properties and methods</li>
+                    <li><strong>Compile-time Errors:</strong> Catch type mismatches before deployment</li>
+                    <li><strong>Better Refactoring:</strong> Safely rename and refactor with full type awareness</li>
+                    <li><strong>Documentation:</strong> Hover over types to see inline documentation</li>
+                    <li><strong>Consistency:</strong> Official types maintained by Salesforce - no more custom definitions!</li>
+                </ul>
+            </div>
+
+            <!-- Installation Note -->
+            <div class="slds-box slds-theme_shade slds-m-top_medium">
+                <h3 class="slds-text-heading_small slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:package" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    Installation
+                </h3>
+                <div class="code-block-inline">
+                    <code>npm install @salesforce/lightning-types --save-dev</code>
+                </div>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

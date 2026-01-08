@@ -1,0 +1,146 @@
+<template>
+    <lightning-card title="Complex Template Expressions Demo" icon-name="custom:custom63">
+
+        <!-- Section 1: Template Literals -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">1. Template Literals</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>{`Hello, ${firstName} ${lastName}!`}</p>
+                <p>{`Full name: ${[firstName, lastName].join(' ')}`}</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Ternary Operators -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">2. Ternary Operators</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>{isLoggedIn ? 'Welcome back!' : 'Please log in'}</p>
+                <p>{score > 80 ? 'Excellent' : score > 60 ? 'Good' : 'Needs Improvement'}</p>
+                <p>Status: {status === 'active' ? 'User is Active' : 'User is Inactive'}</p>
+                <div class="slds-m-top_small">
+                    <lightning-button-stateful
+                        label-when-off="Log In"
+                        label-when-on="Log Out"
+                        icon-name-when-off="utility:log_a_call"
+                        icon-name-when-on="utility:logout"
+                        selected="{isLoggedIn}"
+                        onclick="{() => isLoggedIn = !isLoggedIn}"
+                        variant="brand">
+                    </lightning-button-stateful>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Logical Operators -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">3. Logical Operators</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>{user && user.profile && user.profile.name}</p>
+                <p>Theme: {user?.profile?.settings?.theme || 'default'}</p>
+                <p>{isLoggedIn && 'You are currently logged in'}</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Optional Chaining & Nullish Coalescing -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">4. Optional Chaining & Nullish Coalescing</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>User: {user?.profile?.name ?? 'Anonymous'}</p>
+                <p>Theme: {user?.profile?.settings?.theme ?? 'light'}</p>
+                <p>Missing property: {user?.nonexistent?.value ?? 'Not found'}</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Arithmetic & Function Calls -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">5. Arithmetic & Function Calls</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>Price: {formatCurrency(price)}</p>
+                <p>Quantity: {quantity}</p>
+                <p>Subtotal: {formatCurrency(price * quantity)}</p>
+                <p>Discount ({discountPercent}%): {formatCurrency(price * quantity * discountPercent / 100)}</p>
+                <p>Total: {formatCurrency(price * quantity * (100 - discountPercent) / 100)}</p>
+                <lightning-button-group class="slds-m-top_small">
+                    <lightning-button-icon
+                        icon-name="utility:dash"
+                        alternative-text="Decrease"
+                        onclick="{() => quantity > 0 ? quantity-- : null}">
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:add"
+                        alternative-text="Increase"
+                        onclick="{() => quantity++}">
+                    </lightning-button-icon>
+                </lightning-button-group>
+            </div>
+        </div>
+
+        <!-- Section 6: Array Expressions -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">6. Array Expressions</h2>
+            <div class="slds-box slds-theme_shade">
+                <p>Names joined: {[firstName, lastName].join(' | ')}</p>
+                <p>Total items: {items.length}</p>
+                <p>In-stock items: {items.filter(item => item.inStock).length}</p>
+                <p>Total value: {formatCurrency(items.reduce((sum, item) => sum + item.price, 0))}</p>
+                <p>Product names: {items.map(item => item.name).join(', ')}</p>
+            </div>
+        </div>
+
+        <!-- Section 7: User Input with Expressions -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">7. User Input with Expressions</h2>
+            <div class="slds-box slds-theme_shade">
+                <lightning-input
+                    label="Enter your name"
+                    value="{inputName}"
+                    onchange="{handleInput}">
+                </lightning-input>
+                <p class="slds-m-top_small">
+                    {inputName ? `Hello, ${inputName.trim().toUpperCase()}!` : 'Please enter your name'}
+                </p>
+                <p>{inputName ? `Your name has ${inputName.length} characters` : ''}</p>
+            </div>
+        </div>
+
+        <!-- Section 8: List Rendering with for:each -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">8. List Rendering with for:each</h2>
+            <div class="slds-box slds-theme_shade">
+                <template for:each="{getInStockItems()}" for:item="item">
+                    <div key="{item.id}" class="slds-p-around_x-small slds-border_bottom">
+                        <p><strong>{item.name}</strong> - {formatCurrency(item.price)}</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Section 9: Iterator with Complex Expressions -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">9. Iterator with Expressions</h2>
+            <div class="slds-box slds-theme_shade">
+                <template for:each="{contacts}" for:item="contact">
+                    <div key="{contact.id}" class="slds-p-around_x-small slds-border_bottom">
+                        <p><strong>{`${contact.firstName} ${contact.lastName}`}</strong></p>
+                        <p>Email: {contact.email ?? 'No email provided'}</p>
+                        <p>Age Category: {contact.age >= 18 ? 'Adult' : 'Minor'}</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Section 10: Dynamic Styling -->
+        <div class="slds-p-around_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small">10. Dynamic Class Names</h2>
+            <div class="slds-box slds-theme_shade">
+                <div class="{isLoggedIn ? 'slds-text-color_success' : 'slds-text-color_error'}">
+                    {isLoggedIn ? 'Logged In (Green)' : 'Logged Out (Red)'}
+                </div>
+                <div class="{`slds-m-top_small ${score > 80 ? 'slds-text-color_success' : 'slds-text-color_weak'}`}">
+                    Score: {score} ({score > 80 ? 'Passing' : 'Needs Work'})
+                </div>
+            </div>
+        </div>
+
+    </lightning-card>
+</template>

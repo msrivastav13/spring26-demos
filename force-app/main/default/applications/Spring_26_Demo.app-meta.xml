@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+    </brand>
+    <description>Spring &apos;26 Developer Features Demo App showcasing LWC TypeScript, Dynamic Events, Template Expressions, Empty States, GraphQL Mutations, and Flow Navigation.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>Spring 26 Demo</label>
+    <navType>Standard</navType>
+    <tabs>TypeScript_Demo</tabs>
+    <tabs>Dynamic_Event_Demo</tabs>
+    <tabs>Template_Expressions_Demo</tabs>
+    <tabs>Empty_State_Demo</tabs>
+    <tabs>GraphQL_Mutation_Demo</tabs>
+    <tabs>Flow_Navigation_Demo</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

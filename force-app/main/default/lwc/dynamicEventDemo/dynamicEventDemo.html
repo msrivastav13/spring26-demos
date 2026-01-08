@@ -1,0 +1,189 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card>
+        <!-- Header Section -->
+        <div slot="title" class="slds-grid slds-grid_vertical-align-center slds-grid_align-center">
+            <span class="slds-var-m-right_small" style="font-size: 1.5rem;">🎛️</span>
+            <span class="slds-text-heading_medium">DYNAMIC BEAT PAD</span>
+            <lightning-badge label="lwc:on Demo" class="slds-var-m-left_small"></lightning-badge>
+        </div>
+        
+        <p slot="actions" class="slds-text-body_small slds-text-color_weak">
+            Experience the power of <code class="slds-text-color_success">lwc:on={eventHandlers}</code> directive
+        </p>
+
+        <div class="slds-var-p-around_medium">
+            <!-- Mode Selector -->
+            <div class="slds-box slds-var-m-bottom_medium">
+                <h2 class="slds-text-heading_small slds-var-m-bottom_x-small slds-text-align_center">🎮 Event Trigger Mode</h2>
+                <p class="slds-text-body_small slds-text-color_weak slds-text-align_center slds-var-m-bottom_small">
+                    Change how pads respond to interactions. The <code class="slds-text-color_success">lwc:on</code> directive dynamically 
+                    attaches different event listeners based on your selection!
+                </p>
+                <lightning-button-group class="slds-grid slds-grid_align-center">
+                    <lightning-button 
+                        label="🖱️ Click" 
+                        variant={clickButtonVariant} 
+                        onclick={setModeClick}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="✨ Hover" 
+                        variant={hoverButtonVariant} 
+                        onclick={setModeHover}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="👆 Touch" 
+                        variant={touchButtonVariant} 
+                        onclick={setModeTouch}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="🎯 All" 
+                        variant={allButtonVariant} 
+                        onclick={setModeAll}>
+                    </lightning-button>
+                </lightning-button-group>
+            </div>
+
+            <!-- Audio Visualizer -->
+            <div class="slds-box slds-box_x-small slds-var-m-bottom_medium visualizer-container">
+                <div class="visualizer-bars">
+                    <template for:each={visualizerBars} for:item="bar">
+                        <div key={bar.id} class="viz-bar" style={bar.style}></div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Beat Pads Grid -->
+            <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-bottom_medium">
+                <template for:each={pads} for:item="pad">
+                    <!-- 
+                        🔥 THE MAGIC HAPPENS HERE! 
+                        lwc:on={pad.eventHandlers} dynamically attaches all event listeners
+                    -->
+                    <div 
+                        key={pad.id}
+                        class="beat-pad slds-var-m-around_x-small"
+                        data-active={pad.isActive}
+                        data-focused={pad.hasFocus}
+                        style={pad.styleVar}
+                        lwc:on={pad.eventHandlers}
+                        tabindex="0"
+                        role="button"
+                        aria-label={pad.label}
+                        aria-pressed={pad.isActive}
+                    >
+                        <div class="pad-inner" style={pad.colorStyle}>
+                            <span class="pad-emoji">{pad.emoji}</span>
+                            <span class="pad-label slds-text-title_caps">{pad.label}</span>
+                            <span class="pad-key">{pad.key}</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Keyboard Guide -->
+            <div class="slds-box slds-theme_shade slds-var-m-bottom_medium slds-text-align_center">
+                <h3 class="slds-text-heading_small slds-var-m-bottom_small">⌨️ Keyboard Controls</h3>
+                <div class="slds-grid slds-grid_vertical slds-grid_align-center slds-var-m-bottom_small">
+                    <div class="slds-var-m-bottom_xx-small">
+                        <kbd class="slds-media_center key-btn">Q</kbd>
+                        <kbd class="slds-media_center key-btn">W</kbd>
+                        <kbd class="slds-media_center key-btn">E</kbd>
+                    </div>
+                    <div class="slds-var-m-bottom_xx-small">
+                        <kbd class="slds-media_center key-btn">A</kbd>
+                        <kbd class="slds-media_center key-btn">S</kbd>
+                        <kbd class="slds-media_center key-btn">D</kbd>
+                    </div>
+                    <div>
+                        <kbd class="slds-media_center key-btn">Z</kbd>
+                        <kbd class="slds-media_center key-btn">X</kbd>
+                        <kbd class="slds-media_center key-btn">C</kbd>
+                    </div>
+                </div>
+                <p class="slds-text-body_small slds-text-color_weak">
+                    Press <kbd class="slds-media_center key-btn key-btn_small">SPACE</kbd> to toggle sequencer
+                </p>
+            </div>
+
+            <!-- Sequencer Section -->
+            <div class="slds-box slds-var-m-bottom_medium">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-var-m-bottom_small slds-wrap">
+                    <h3 class="slds-text-heading_small">🎼 Step Sequencer</h3>
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <lightning-button 
+                            label={sequencerButtonLabel} 
+                            variant="brand" 
+                            onclick={toggleSequencer}
+                            class="slds-var-m-right_small">
+                        </lightning-button>
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <label for="bpm-slider" class="slds-text-body_small slds-text-color_weak slds-m-right_x-small">BPM: {bpm}</label>
+                            <input 
+                                type="range" 
+                                id="bpm-slider"
+                                min="60" 
+                                max="180" 
+                                value={bpm} 
+                                onchange={handleBpmChange}
+                                class="bpm-slider"
+                                aria-label="Beats per minute"
+                            />
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step Indicator -->
+                <div class="slds-grid slds-grid_align-center slds-var-m-bottom_small step-indicator">
+                    <template for:each={sequencerSteps} for:item="step">
+                        <div 
+                            key={step.id} 
+                            class="step-dot"
+                            data-active={step.isActive}
+                        ></div>
+                    </template>
+                </div>
+
+                <!-- Sequencer Grid -->
+                <div class="sequencer-grid">
+                    <template for:each={sequencerRows} for:item="row">
+                        <div key={row.padId} class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                            <span class="row-label">{row.emoji}</span>
+                            <template for:each={row.steps} for:item="step">
+                            <button 
+                                key={step.index}
+                                class="seq-step"
+                                data-active={step.isActive}
+                                data-current={step.isCurrent}
+                                data-pad-id={row.padId}
+                                data-step={step.index}
+                                onclick={toggleSequencerStep}
+                                aria-label="Toggle sequencer step"
+                            ></button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Code Example -->
+            <lightning-accordion allow-multiple-sections-open>
+                <lightning-accordion-section name="code" label="💡 How lwc:on Works">
+                    <div class="slds-box slds-theme_shade code-block">
+                        <pre class="slds-text-font_monospace slds-text-body_small"><code class="code-content">{codeExample}</code></pre>
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+            <!-- Footer -->
+            <div class="slds-text-align_center slds-var-m-top_medium slds-text-color_weak">
+                <p class="slds-text-body_small">
+                    Built with ❤️ to demonstrate <strong>lwc:on</strong> dynamic event binding
+                </p>
+                <p class="slds-text-body_small">
+                    Current Mode: <lightning-badge label={currentMode} class="slds-badge_inverse"></lightning-badge>
+                </p>
+            </div>
+        </div>
+    </lightning-card>
+</template>
