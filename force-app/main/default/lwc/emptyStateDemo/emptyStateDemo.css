@@ -1,0 +1,10 @@
+.demo-container {
+    padding: 1rem;
+}
+
+/* Constrain the lightning-illustration size */
+.illustration-container {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
